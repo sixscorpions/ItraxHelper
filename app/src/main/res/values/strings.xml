@@ -10,4 +10,11 @@
     <string name="no_internet_msg_main">This Application required internet connection. Please check your internet setting and try again.</string>
     <string name="no_internet_title">No internet</string>
 
+    <string name="loginLogo">Logo</string>
+    <string name="hint_mobile">Enter Mobile Number</string>
+    <string name="hint_pin">Enter Pin</string>
+    <string name="login">Login</string>
+    <string name="forgotPin">Forgot Pin</string>
+    <string name="copyrights">Copyright © iCue 2016.</string>
+    <string name="reseved">All Rights Reserved</string>
 </resources>
