@@ -6,7 +6,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/login_background">
 
         <ImageView
             android:id="@+id/icue_logo"
@@ -37,11 +38,12 @@
                 android:paddingTop="10dp">
 
                 <EditText
-                    android:id="@+id/username"
+                    android:id="@+id/et_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_mobile"
                     android:inputType="number"
+                    android:text="@string/helper"
                     android:textColor="@android:color/white" />
             </RelativeLayout>
 
@@ -58,11 +60,12 @@
                 android:paddingTop="10dp">
 
                 <EditText
-                    android:id="@+id/pin"
+                    android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_pin"
                     android:inputType="textPassword"
+                    android:text="@string/one_two"
                     android:textColor="@android:color/white" />
             </LinearLayout>
 
@@ -78,7 +81,6 @@
                 android:contentDescription="@string/login"
                 android:onClick="login"
                 android:src="@drawable/ic_login" />
-
 
             <TextView
                 android:id="@+id/button_forgotPin"
