@@ -1,6 +1,8 @@
 package com.itraxhelper.parser;
 
 
+import android.content.Context;
+
 import com.itraxhelper.models.Model;
 
 /**
@@ -8,5 +10,5 @@ import com.itraxhelper.models.Model;
  */
 public interface Parser<T extends Model> {
 
-    T parse(String s);
+    T parse(String s, Context context);
 }

@@ -90,7 +90,7 @@ public class ServerIntractorAsync extends BaseAsynkTask {
 
     private int getResponse(String response) {
         try {
-            model = parser.parse(response);
+            model = parser.parse(response, mContext);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
