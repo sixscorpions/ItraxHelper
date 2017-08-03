@@ -20,4 +20,7 @@
     <string name="unauthorized_access">Unauthorized access</string>
     <string name="helper">helper</string>
     <string name="one_two">1234</string>
+    <string name="in">IN</string>
+    <string name="out">OUT</string>
+    <string name="mess">MESS</string>
 </resources>

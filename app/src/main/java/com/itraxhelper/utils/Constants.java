@@ -23,5 +23,6 @@ public class Constants {
     public static final String LOGIN_BRANCH_ID = "LOGIN_BRANCH_ID";
     public static final String LOGIN_CONTACT_EMAIL = "LOGIN_CONTACT_EMAIL";
     public static final String LOGIN_CONTACT_MOBILE = "LOGIN_CONTACT_MOBILE";
+    public static final String LOGIN_PHOTO = "LOGIN_PHOTO";
 
 }

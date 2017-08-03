@@ -5,4 +5,7 @@
     <color name="colorAccent">#0a333e</color>
 
     <color name="login_background">#015b3f</color>
+    <color name="in_bg">#698e1c</color>
+    <color name="out_bg">#c6e27e</color>
+    <color name="mess_bg">#89a54e</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.itraxhelper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -10,6 +11,7 @@ import com.itraxhelper.models.LoginModel;
 import com.itraxhelper.models.Model;
 import com.itraxhelper.parser.LoginParser;
 import com.itraxhelper.utils.APIConstants;
+import com.itraxhelper.utils.Constants;
 import com.itraxhelper.utils.Utility;
 
 import org.json.JSONArray;
@@ -26,6 +28,7 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements IAsyncCaller {
 
+    private LoginModel loginModel;
     @BindView(R.id.et_username)
     EditText et_username;
 
@@ -82,8 +85,33 @@ public class LoginActivity extends BaseActivity implements IAsyncCaller {
     public void onComplete(Model model) {
         if (model != null) {
             if (model instanceof LoginModel) {
-
+                loginModel = (LoginModel) model;
+                saveDataInSharedPreference();
             }
         }
+    }
+
+    /**
+     * This method is used to save data in the DB
+     */
+    private void saveDataInSharedPreference() {
+        Utility.setSharedPrefStringData(this, Constants.LOGIN_ID, loginModel.getId());
+        Utility.setSharedPrefStringData(this, Constants.LOGIN_NAME, loginModel.getName());
+        Utility.setSharedPrefStringData(this, Constants.LOGIN_USERNAME, loginModel.getUserName());
+        Utility.setSharedPrefStringData(this, Constants.LOGIN_ORGANIZATION_ID, loginModel.getOrganizationId());
+        Utility.setSharedPrefStringData(this, Constants.LOGIN_ZONE_ID, loginModel.getZoneId());
+        Utility.setSharedPrefStringData(this, Constants.LOGIN_BRANCH_ID, loginModel.getBranchId());
+        Utility.setSharedPrefStringData(this, Constants.LOGIN_CONTACT_EMAIL, loginModel.getContactEmail());
+        Utility.setSharedPrefStringData(this, Constants.LOGIN_CONTACT_MOBILE, loginModel.getContactMobile());
+        Utility.setSharedPrefStringData(this, Constants.LOGIN_PHOTO, loginModel.getPhoto());
+        navigateToMain();
+    }
+
+    /**
+     * This method is used to navigate main
+     */
+    private void navigateToMain() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }
