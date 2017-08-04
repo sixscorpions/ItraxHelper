@@ -275,6 +275,20 @@ public class Utility {
         return formattedDate;
     }
 
+    public static String getMonth() {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("MM");
+        String formattedDate = df.format(c.getTime());
+        return formattedDate;
+    }
+
+    public static String getYear() {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
+        String formattedDate = df.format(c.getTime());
+        return formattedDate;
+    }
+
     public static String httpJsonRequest(String url, HashMap<String, String> mParams, Context context) {
         String websiteData = "error";
         HttpClient client = new DefaultHttpClient();

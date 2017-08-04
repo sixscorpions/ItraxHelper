@@ -20,7 +20,10 @@
     <string name="unauthorized_access">Unauthorized access</string>
     <string name="helper">helper</string>
     <string name="one_two">1234</string>
-    <string name="in">IN</string>
-    <string name="out">OUT</string>
+    <string name="in">DROP-IN</string>
+    <string name="out">DROP-OUT</string>
     <string name="mess">MESS</string>
+    <string name="rfid_number">RFID Number</string>
+    <string name="reading_rfid_data">Reading RFID Data</string>
+    <string name="submit">Submit</string>
 </resources>

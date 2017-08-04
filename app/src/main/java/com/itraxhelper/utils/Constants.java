@@ -25,4 +25,7 @@ public class Constants {
     public static final String LOGIN_CONTACT_MOBILE = "LOGIN_CONTACT_MOBILE";
     public static final String LOGIN_PHOTO = "LOGIN_PHOTO";
 
+    public static final String TYPE = "TYPE";
+    public static final String MODE = "MODE";
+
 }

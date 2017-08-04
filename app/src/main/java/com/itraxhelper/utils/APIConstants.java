@@ -20,5 +20,6 @@ public class APIConstants {
     //public static String BASE_URL = "http://icuepro.com/api/v1.0/";
 
     public static String HELPER_LOGIN = BASE_URL + "helperLogin";
+    public static String CREATE_ESCORT_MESS_ATTENDANCE = BASE_URL + "createEscortMessAttendance";
 
 }
