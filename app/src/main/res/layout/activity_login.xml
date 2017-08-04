@@ -92,7 +92,8 @@
                 android:contentDescription="@string/login"
                 android:onClick="forgotPin"
                 android:text="@string/forgotPin"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
         </RelativeLayout>
 
 
