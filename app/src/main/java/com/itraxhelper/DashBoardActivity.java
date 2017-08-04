@@ -64,7 +64,7 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller{
                 linkedHashMap.put("Month", Utility.getMonth());
                 linkedHashMap.put("Mode", mMode);
                 LoginParser loginParser = new LoginParser();
-                ServerIntractorAsync serverJSONAsyncTask = new ServerIntractorAsync(
+                ServerJSONAsyncTask serverJSONAsyncTask = new ServerJSONAsyncTask(
                         this, Utility.getResourcesString(this, R.string.please_wait), true,
                         APIConstants.CREATE_ESCORT_MESS_ATTENDANCE, linkedHashMap,
                         APIConstants.REQUEST_TYPE.POST, this, loginParser);

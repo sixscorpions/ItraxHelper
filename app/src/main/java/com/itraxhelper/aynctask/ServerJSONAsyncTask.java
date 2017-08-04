@@ -7,6 +7,7 @@ import com.itraxhelper.R;
 import com.itraxhelper.models.Model;
 import com.itraxhelper.parser.Parser;
 import com.itraxhelper.utils.APIConstants;
+import com.itraxhelper.utils.Constants;
 import com.itraxhelper.utils.Utility;
 
 import org.json.JSONObject;
@@ -155,12 +156,11 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
             }*/
             }
 
-            connection.setRequestProperty("Content", "application/json");
-            connection.setRequestProperty("Accept", "application/json");
-            /*if (!Utility.isValueNullOrEmpty(Utility.getSharedPrefStringData(mContext, Constants.TOKEN))) {
-                String token = Utility.getSharedPrefStringData(mContext, Constants.TOKEN);
-                connection.setRequestProperty("token", token);
-            }*/
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Accept", "application/x-www-form-urlencoded");
+            if (!Utility.isValueNullOrEmpty(Utility.getSharedPrefStringData(mContext, Constants.LOGIN_SESSION_ID))) {
+                connection.setRequestProperty("Cookie", "connect.sid=" + Utility.getSharedPrefStringData(mContext, Constants.LOGIN_SESSION_ID));
+            }
             connection.setUseCaches(false);
         } catch (Exception e) {
             e.printStackTrace();
@@ -173,13 +173,12 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
                 Utility.showLog("param1", "" + param1);
                 OutputStream os = connection.getOutputStream();
                 Writer writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
-                if (true) {
+                if (mUrl.contains(APIConstants.HELPER_LOGIN) || mUrl.contains(APIConstants.CREATE_ESCORT_MESS_ATTENDANCE)) {
                     Utility.showLog("mParams", "" + getURL(mParams));
                     writer.write(getURL(mParams));
                 } else {
                     writer.write(param1);
                 }
-                //writer.write(param1);
                 /*
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
                 writer.write(URLEncoder.encode(param1));*/
@@ -240,7 +239,7 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
                 List<HttpCookie> cookies = msCookieManager.getCookieStore().getCookies();
                 if (cookies != null) {
                     for (HttpCookie cookie : cookies) {
-                      //  Utility.setSharedPrefStringData(mContext, Constants.TOKEN, cookie.getValue());
+                        Utility.setSharedPrefStringData(mContext, Constants.LOGIN_SESSION_ID, cookie.getValue());
                     }
                 }
             }
