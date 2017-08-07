@@ -6,7 +6,6 @@ import android.widget.EditText;
 
 import com.itraxhelper.aynctask.IAsyncCaller;
 import com.itraxhelper.aynctask.ServerJSONAsyncTask;
-import com.itraxhelper.aynctaskold.ServerIntractorAsync;
 import com.itraxhelper.models.Model;
 import com.itraxhelper.parser.LoginParser;
 import com.itraxhelper.utils.APIConstants;
@@ -25,7 +24,7 @@ import butterknife.OnClick;
  * Created by shankar on 8/4/2017.
  */
 
-public class DashBoardActivity extends BaseActivity implements IAsyncCaller{
+public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
 
     @BindView(R.id.et_id)
     EditText et_id;
