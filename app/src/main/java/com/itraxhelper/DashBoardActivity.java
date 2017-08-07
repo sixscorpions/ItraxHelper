@@ -3,6 +3,7 @@ package com.itraxhelper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.itraxhelper.aynctask.IAsyncCaller;
 import com.itraxhelper.aynctask.ServerJSONAsyncTask;
@@ -29,6 +30,9 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
     @BindView(R.id.et_id)
     EditText et_id;
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
     private Intent intent;
     private String mType;
     private String mMode;
@@ -42,6 +46,7 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
         if (intent.hasExtra(Constants.TYPE)) {
             mType = intent.getStringExtra(Constants.TYPE);
             mMode = intent.getStringExtra(Constants.MODE);
+            tv_title.setText(mType.toUpperCase() + " " + mMode.toUpperCase());
         }
     }
 
