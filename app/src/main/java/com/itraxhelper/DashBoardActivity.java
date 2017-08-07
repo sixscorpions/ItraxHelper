@@ -2,6 +2,8 @@ package com.itraxhelper;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -19,7 +21,6 @@ import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by shankar on 8/4/2017.
@@ -37,6 +38,7 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
     private String mType;
     private String mMode;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +50,26 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
             mMode = intent.getStringExtra(Constants.MODE);
             tv_title.setText(mType.toUpperCase() + " " + mMode.toUpperCase());
         }
+
+        et_id.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 9)
+                    sendDataToServer();
+            }
+        });
     }
 
-    /**
-     * This method is used to send data to server
-     */
-    @OnClick(R.id.btn_submit)
     void sendDataToServer() {
         if (isValidFields()) {
             try {
@@ -76,7 +92,6 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
     }
 

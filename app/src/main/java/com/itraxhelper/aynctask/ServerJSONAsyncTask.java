@@ -38,6 +38,7 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
     private int CONNECTION_TIME_OUT = 8000;
     static final String COOKIES_HEADER = "Set-Cookie";
     private java.net.CookieManager msCookieManager = new java.net.CookieManager();
+    private int responseCode;
 
     public ServerJSONAsyncTask(Context context, String dialogMessage,
                                boolean showDialog, String url, LinkedHashMap<String, String> mParams,
@@ -105,8 +106,13 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
             } else {
                 model = null;
                 caller.onComplete(model);
-                Utility.showOKOnlyDialog(mContext, Utility.getResourcesString(mContext, R.string.unauthorized_access),
-                        Utility.getResourcesString(mContext, R.string.app_name));
+                if (responseCode == 204) {
+                    Utility.showOKOnlyDialog(mContext, Utility.getResourcesString(mContext, R.string.student_not_found),
+                            Utility.getResourcesString(mContext, R.string.app_name));
+                } else {
+                    Utility.showOKOnlyDialog(mContext, Utility.getResourcesString(mContext, R.string.unauthorized_access),
+                            Utility.getResourcesString(mContext, R.string.app_name));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,9 +199,10 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
         }
 
         String result;
-        int responseCode;
+        //int responseCode;
         try {
             responseCode = connection.getResponseCode();
+            Utility.showLog("API CALL :", "RESPONSE CODE: " + responseCode);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
