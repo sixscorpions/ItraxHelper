@@ -9,8 +9,11 @@ import android.widget.TextView;
 
 import com.itraxhelper.aynctask.IAsyncCaller;
 import com.itraxhelper.aynctask.ServerJSONAsyncTask;
+import com.itraxhelper.models.LoginModel;
 import com.itraxhelper.models.Model;
+import com.itraxhelper.models.RFIDModel;
 import com.itraxhelper.parser.LoginParser;
+import com.itraxhelper.parser.RFIDParser;
 import com.itraxhelper.utils.APIConstants;
 import com.itraxhelper.utils.Constants;
 import com.itraxhelper.utils.Utility;
@@ -83,11 +86,11 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
                 linkedHashMap.put("Month", Utility.getMonth());
                 linkedHashMap.put("Month", Utility.getMonth());
                 linkedHashMap.put("Mode", mMode);
-                LoginParser loginParser = new LoginParser();
+                RFIDParser rfidParser = new RFIDParser();
                 ServerJSONAsyncTask serverJSONAsyncTask = new ServerJSONAsyncTask(
                         this, Utility.getResourcesString(this, R.string.please_wait), true,
                         APIConstants.CREATE_ESCORT_MESS_ATTENDANCE, linkedHashMap,
-                        APIConstants.REQUEST_TYPE.POST, this, loginParser);
+                        APIConstants.REQUEST_TYPE.POST, this, rfidParser);
                 Utility.execute(serverJSONAsyncTask);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -108,6 +111,11 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
 
     @Override
     public void onComplete(Model model) {
-
+        if (model != null) {
+            if (model instanceof RFIDModel) {
+                RFIDModel mRFIDModel = (RFIDModel) model;
+                Utility.showToastMessage(DashBoardActivity.this, "Student Name: " + mRFIDModel.getStudentName());
+            }
+        }
     }
 }

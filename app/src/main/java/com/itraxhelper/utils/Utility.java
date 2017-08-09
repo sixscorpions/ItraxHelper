@@ -258,7 +258,7 @@ public class Utility {
     }
 
     public static Typeface getMaterialIconsRegular(Context context) {
-        return Typeface.createFromAsset(context.getAssets(), "fonts/matireal_icons_regular.ttf");
+        return Typeface.createFromAsset(context.getAssets(), "matireal_icons_regular.ttf");
     }
 
     public static String getTime() {

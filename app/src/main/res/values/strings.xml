@@ -27,4 +27,5 @@
     <string name="rfid_number">RFID Number</string>
     <string name="reading_rfid_data">Reading RFID Data</string>
     <string name="submit">Submit</string>
+    <string name="log_out">&#xE879;</string>
 </resources>

@@ -37,8 +37,8 @@ public class LoginParser implements Parser<Model> {
 
             HelperAppFeatureModel helperAppFeatureModel = new HelperAppFeatureModel();
             JSONObject helperAppFeatureJsonObject = jsonObject.optJSONObject("HelperAppFeature");
-            helperAppFeatureModel.setId(helperAppFeatureJsonObject.optString(helperAppFeatureJsonObject.optString("Id")));
-            helperAppFeatureModel.setName(helperAppFeatureJsonObject.optString(helperAppFeatureJsonObject.optString("Name")));
+            helperAppFeatureModel.setId(helperAppFeatureJsonObject.optString("Id"));
+            helperAppFeatureModel.setName(helperAppFeatureJsonObject.optString("Name"));
             loginModel.setHelperAppFeatureModel(helperAppFeatureModel);
 
             ArrayList<RolesModel> rolesModels = new ArrayList<>();
