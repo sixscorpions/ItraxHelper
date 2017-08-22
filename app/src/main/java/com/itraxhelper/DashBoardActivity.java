@@ -3,9 +3,13 @@ package com.itraxhelper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.style.RelativeSizeSpan;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.itraxhelper.aynctask.IAsyncCaller;
 import com.itraxhelper.aynctask.ServerJSONAsyncTask;
@@ -117,7 +121,12 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
         if (model != null) {
             if (model instanceof RFIDModel) {
                 RFIDModel mRFIDModel = (RFIDModel) model;
-                Utility.showToastMessage(DashBoardActivity.this, "Student Name: " + mRFIDModel.getStudentName());
+                //Utility.showToastMessage(DashBoardActivity.this, "Student Name: " + mRFIDModel.getStudentName());
+
+                SpannableStringBuilder biggerText = new SpannableStringBuilder(mRFIDModel.getStudentName());
+                biggerText.setSpan(new RelativeSizeSpan(1.35f), 0, mRFIDModel.getStudentName().length(), 0);
+                Toast.makeText(DashBoardActivity.this, biggerText, Toast.LENGTH_LONG).show();
+                et_id.setText("");
             }
         }
     }
