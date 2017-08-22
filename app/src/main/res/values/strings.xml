@@ -19,6 +19,7 @@
     <string name="reseved">All Rights Reserved</string>
     <string name="unauthorized_access">Unauthorized access</string>
     <string name="student_not_found">Student not found</string>
+    <string name="invalid_credentials">Invalid credentials</string>
     <string name="helper">helper</string>
     <string name="one_two">1234</string>
     <string name="in">DROP-IN</string>

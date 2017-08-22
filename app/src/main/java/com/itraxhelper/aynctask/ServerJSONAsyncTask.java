@@ -107,8 +107,9 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
                 model = null;
                 caller.onComplete(model);
                 if (responseCode == 204) {
-                    Utility.showOKOnlyDialog(mContext, Utility.getResourcesString(mContext, R.string.student_not_found),
-                            Utility.getResourcesString(mContext, R.string.app_name));
+                    Utility.showToastMessage(mContext, Utility.getResourcesString(mContext, R.string.student_not_found));
+                } else if (responseCode == 401 && mUrl.equalsIgnoreCase(APIConstants.HELPER_LOGIN)) {
+                    Utility.showToastMessage(mContext, Utility.getResourcesString(mContext, R.string.invalid_credentials));
                 } else {
                     Utility.showOKOnlyDialog(mContext, Utility.getResourcesString(mContext, R.string.unauthorized_access),
                             Utility.getResourcesString(mContext, R.string.app_name));
