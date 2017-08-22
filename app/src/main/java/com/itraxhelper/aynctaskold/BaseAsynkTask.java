@@ -1,5 +1,6 @@
 package com.itraxhelper.aynctaskold;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
@@ -19,7 +20,7 @@ import java.util.HashMap;
  */
 public abstract class BaseAsynkTask extends AsyncTask<Void, Void, Integer> {
     protected AnimationDrawable Anim;
-    protected CustomProgressDialog mCustomProgressDialog = null;
+    private ProgressDialog mCustomProgressDialog = null;
     protected Context mContext;
     protected String mDialogMessage, mApiMessage;
     protected boolean mShowDialog;
@@ -34,23 +35,14 @@ public abstract class BaseAsynkTask extends AsyncTask<Void, Void, Integer> {
     protected LayoutInflater mLayoutInflater;
 
     /**
-     *
-     * @param context
-     *            ,Context to show progress dialog
-     * @param dialogMessage
-     *            , Dialog message for progress dialog
-     * @param showDialog
-     *            , boolean varialble to show progress dialog or not
-     * @param url
-     *            , Url of the web service
-     * @param mParamMap
-     *            , HashMap of keys
-     * @param requestType
-     *            , Type of request(GET/POST)
-     * @param caller
-     *            , Caller activity which will recieve response
-     * @param parser
-     *            , JSON parser for the response
+     * @param context       ,Context to show progress dialog
+     * @param dialogMessage , Dialog message for progress dialog
+     * @param showDialog    , boolean varialble to show progress dialog or not
+     * @param url           , Url of the web service
+     * @param mParamMap     , HashMap of keys
+     * @param requestType   , Type of request(GET/POST)
+     * @param caller        , Caller activity which will recieve response
+     * @param parser        , JSON parser for the response
      */
     public BaseAsynkTask(Context context, String dialogMessage,
                          boolean showDialog, String url, HashMap<String, String> mParamMap,
@@ -64,14 +56,15 @@ public abstract class BaseAsynkTask extends AsyncTask<Void, Void, Integer> {
         this.caller = caller;
         this.mUrl = url;
         this.parser = parser;
-        mCustomProgressDialog = new CustomProgressDialog(mContext);
+        mCustomProgressDialog = new ProgressDialog(mContext);
+        mCustomProgressDialog.setMessage(mDialogMessage);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         if (mShowDialog) {
-            mCustomProgressDialog.showProgress("");
+            mCustomProgressDialog.show();
         }
     }
 
@@ -84,7 +77,7 @@ public abstract class BaseAsynkTask extends AsyncTask<Void, Void, Integer> {
     protected void onPostExecute(Integer result) {
         super.onPostExecute(result);
         if (mCustomProgressDialog != null) {
-            mCustomProgressDialog.dismissProgress();
+            mCustomProgressDialog.dismiss();
         }
     }
 }

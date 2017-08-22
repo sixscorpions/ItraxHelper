@@ -62,7 +62,6 @@ public class LoginActivity extends BaseActivity implements IAsyncCaller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
     }
 

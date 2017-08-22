@@ -1,5 +1,6 @@
 package com.itraxhelper.aynctask;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
@@ -19,7 +20,7 @@ import java.util.LinkedHashMap;
  */
 public abstract class BaseAsyncTask extends AsyncTask<Void, Void, Integer> {
     protected AnimationDrawable Anim;
-    protected CustomProgressDialog mCustomProgressDialog = null;
+    private ProgressDialog mCustomProgressDialog = null;
     protected Context mContext;
     protected String mDialogMessage, mApiMessage;
     protected boolean mShowDialog;
@@ -58,7 +59,8 @@ public abstract class BaseAsyncTask extends AsyncTask<Void, Void, Integer> {
         this.caller = caller;
         this.mUrl = url;
         this.parser = parser;
-        mCustomProgressDialog = new CustomProgressDialog(mContext);
+        mCustomProgressDialog = new ProgressDialog(mContext);
+        mCustomProgressDialog.setMessage(mDialogMessage);
     }
 
     public BaseAsyncTask(Context context, String dialogMessage,
@@ -76,14 +78,15 @@ public abstract class BaseAsyncTask extends AsyncTask<Void, Void, Integer> {
         this.file = file;
         this.mFiles = mFiles;
         this.tag = tag;
-        mCustomProgressDialog = new CustomProgressDialog(mContext);
+        mCustomProgressDialog = new ProgressDialog(mContext);
+        mCustomProgressDialog.setMessage(mDialogMessage);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         if (mShowDialog) {
-            mCustomProgressDialog.showProgress("");
+            mCustomProgressDialog.show();
         }
     }
 
@@ -96,7 +99,7 @@ public abstract class BaseAsyncTask extends AsyncTask<Void, Void, Integer> {
     protected void onPostExecute(Integer result) {
         super.onPostExecute(result);
         if (mCustomProgressDialog != null) {
-            mCustomProgressDialog.dismissProgress();
+            mCustomProgressDialog.dismiss();
         }
     }
 }

@@ -21,6 +21,17 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/_18sp" />
 
+        <ImageView
+            android:id="@+id/icue_logo"
+            android:layout_width="@dimen/_50dp"
+            android:layout_height="@dimen/_30dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_marginStart="@dimen/_10dp"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@string/loginLogo"
+            android:src="@drawable/ic_launcher_app_level" />
 
         <TextView
             android:id="@+id/tv_logout"
