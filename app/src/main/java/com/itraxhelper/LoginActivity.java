@@ -113,5 +113,6 @@ public class LoginActivity extends BaseActivity implements IAsyncCaller {
     private void navigateToMain() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }

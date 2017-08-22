@@ -51,7 +51,10 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
         if (intent.hasExtra(Constants.TYPE)) {
             mType = intent.getStringExtra(Constants.TYPE);
             mMode = intent.getStringExtra(Constants.MODE);
-            tv_title.setText(mType.toUpperCase() + " " + mMode.toUpperCase());
+            if (mType.equalsIgnoreCase("mess"))
+                tv_title.setText(mType.toUpperCase() + " " + mMode.toUpperCase());
+            else
+                tv_title.setText(mMode.toUpperCase());
         }
 
         et_id.addTextChangedListener(new TextWatcher() {
