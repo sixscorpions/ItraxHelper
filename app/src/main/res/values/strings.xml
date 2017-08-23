@@ -11,7 +11,7 @@
     <string name="no_internet_title">No internet</string>
 
     <string name="loginLogo">Logo</string>
-    <string name="hint_mobile">Enter Mobile Number</string>
+    <string name="hint_mobile">Enter user name</string>
     <string name="hint_pin">Enter Pin</string>
     <string name="login">Login</string>
     <string name="forgotPin">Forgot Pin</string>

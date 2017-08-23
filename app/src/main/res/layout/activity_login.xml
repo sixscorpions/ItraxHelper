@@ -42,7 +42,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_mobile"
-                    android:text="@string/helper"
                     android:textColor="@android:color/white" />
             </RelativeLayout>
 
@@ -63,7 +62,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_pin"
-                    android:text="@string/one_two"
                     android:inputType="textPassword"
                     android:textColor="@android:color/white" />
             </LinearLayout>
