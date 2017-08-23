@@ -124,8 +124,8 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
                 //Utility.showToastMessage(DashBoardActivity.this, "Student Name: " + mRFIDModel.getStudentName());
 
                 SpannableStringBuilder biggerText = new SpannableStringBuilder(mRFIDModel.getStudentName());
-                biggerText.setSpan(new RelativeSizeSpan(1.35f), 0, mRFIDModel.getStudentName().length(), 0);
-                Toast.makeText(DashBoardActivity.this, biggerText, Toast.LENGTH_LONG).show();
+                biggerText.setSpan(new RelativeSizeSpan(2.0f), 0, mRFIDModel.getStudentName().length(), 0);
+                Toast.makeText(DashBoardActivity.this, biggerText, Toast.LENGTH_SHORT).show();
                 et_id.setText("");
             }
         }
