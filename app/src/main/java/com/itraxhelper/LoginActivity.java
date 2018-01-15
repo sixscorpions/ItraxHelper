@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity implements IAsyncCaller {
                 ServerJSONAsyncTask serverJSONAsyncTask = new ServerJSONAsyncTask(
                         this, Utility.getResourcesString(this, R.string.please_wait), true,
                         APIConstants.HELPER_LOGIN, linkedHashMap,
-                        APIConstants.REQUEST_TYPE.POST, this, loginParser);
+                        APIConstants.REQUEST_TYPE.POST, this, loginParser, true);
                 Utility.execute(serverJSONAsyncTask);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -16,7 +16,7 @@ public class APIConstants {
 
     public static String ERROR_MESSAGE = "We could not process your request at this time. Please try again later.";
 
-    public static String BASE_URL = "http://itraxpro.com/api/v1.0/";
+    public static String BASE_URL = "https://itraxpro.com/api/v1.0/";
     //public static String BASE_URL = "http://icuepro.com/api/v1.0/";
 
     public static String HELPER_LOGIN = BASE_URL + "helperLogin";

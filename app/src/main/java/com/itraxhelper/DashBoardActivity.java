@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.RelativeSizeSpan;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.itraxhelper.parser.LoginParser;
 import com.itraxhelper.parser.RFIDParser;
 import com.itraxhelper.utils.APIConstants;
 import com.itraxhelper.utils.Constants;
+import com.itraxhelper.utils.DBHelper;
 import com.itraxhelper.utils.Utility;
 
 import org.json.JSONArray;
@@ -37,6 +39,9 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
 
     @BindView(R.id.et_id)
     EditText et_id;
+
+    @BindView(R.id.offlineCount)
+    TextView offlineCount;
 
     @BindView(R.id.tv_title)
     TextView tv_title;
@@ -61,6 +66,35 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
                 tv_title.setText(mMode.toUpperCase());
         }
 
+        DBHelper dbHelper = new DBHelper(this);
+
+        offlineCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendDataToServer(false);
+            }
+        });
+
+
+        if (mType.equalsIgnoreCase("escort")){
+
+            if (mMode.equalsIgnoreCase("in")){
+
+                offlineCount.setText(dbHelper.getINSwipedDetailsFromDB().length());
+
+            }else if (mMode.equalsIgnoreCase("out")){
+
+                offlineCount.setText(dbHelper.getOUTSwipedDetailsFromDB().length());
+
+            }
+
+        }else {
+
+            offlineCount.setText(dbHelper.getMESSSwipedDetailsFromDB().length());
+
+        }
+
+
         et_id.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -75,29 +109,45 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 9)
-                    sendDataToServer();
+                    sendDataToServer(true);
             }
         });
     }
 
-    void sendDataToServer() {
+    void sendDataToServer(boolean bySwipe) {
         if (isValidFields()) {
             try {
+
                 LinkedHashMap linkedHashMap = new LinkedHashMap();
                 JSONArray jsonArray = new JSONArray();
-                linkedHashMap.put("RFId", et_id.getText().toString());
-                linkedHashMap.put("Type", mType);
-                linkedHashMap.put("Time", Utility.getTime());
-                linkedHashMap.put("Date", Utility.getDate());
-                linkedHashMap.put("Year", Utility.getYear());
-                linkedHashMap.put("Month", Utility.getMonth());
-                linkedHashMap.put("Month", Utility.getMonth());
-                linkedHashMap.put("Mode", mMode);
+
+                if (bySwipe) {
+
+                    linkedHashMap.put("RFId", et_id.getText().toString());
+                    linkedHashMap.put("Type", mType);
+                    linkedHashMap.put("Time", Utility.getTime());
+                    linkedHashMap.put("Date", Utility.getDate());
+                    linkedHashMap.put("Year", Utility.getYear());
+                    linkedHashMap.put("Month", Utility.getMonth());
+                    linkedHashMap.put("Month", Utility.getMonth());
+                    linkedHashMap.put("Mode", mMode);
+                    jsonArray.put(linkedHashMap);
+                }else{
+
+                    DBHelper dbHelper = new DBHelper(this);
+
+                    if(offlineCount.getText().equals("0")){
+                        Toast.makeText(DashBoardActivity.this,"No unsucessful records to update.",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                }
+
                 RFIDParser rfidParser = new RFIDParser();
                 ServerJSONAsyncTask serverJSONAsyncTask = new ServerJSONAsyncTask(
                         this, Utility.getResourcesString(this, R.string.please_wait), true,
                         APIConstants.CREATE_ESCORT_MESS_ATTENDANCE, linkedHashMap,
-                        APIConstants.REQUEST_TYPE.POST, this, rfidParser);
+                        APIConstants.REQUEST_TYPE.POST, this, rfidParser, bySwipe);
                 Utility.execute(serverJSONAsyncTask);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -126,8 +176,10 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
                 SpannableStringBuilder biggerText = new SpannableStringBuilder(mRFIDModel.getStudentName());
                 biggerText.setSpan(new RelativeSizeSpan(2.0f), 0, mRFIDModel.getStudentName().length(), 0);
                 Toast.makeText(DashBoardActivity.this, biggerText, Toast.LENGTH_SHORT).show();
-                et_id.setText("");
+
             }
         }
+
+        et_id.setText("");
     }
 }

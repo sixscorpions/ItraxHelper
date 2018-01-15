@@ -5,6 +5,7 @@
     android:background="@color/background_gray">
 
     <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -35,12 +36,46 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:gravity="end"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/header"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:padding="10dp"
+            android:background="@android:color/holo_red_dark"
+            android:id="@+id/offlineCount"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:padding="5dp"
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="unsubmitted swipe records"
+            android:layout_below="@+id/offlineCount"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:layout_width="wrap_content"

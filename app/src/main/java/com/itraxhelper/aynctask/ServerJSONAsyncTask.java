@@ -8,8 +8,10 @@ import com.itraxhelper.models.Model;
 import com.itraxhelper.parser.Parser;
 import com.itraxhelper.utils.APIConstants;
 import com.itraxhelper.utils.Constants;
+import com.itraxhelper.utils.DBHelper;
 import com.itraxhelper.utils.Utility;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
@@ -35,6 +37,7 @@ import java.util.Map;
 public class ServerJSONAsyncTask extends BaseAsyncTask {
     private String mResponse = null;
     private Model model;
+    private DBHelper dbHelper = new DBHelper(mContext);
     private int CONNECTION_TIME_OUT = 8000;
     static final String COOKIES_HEADER = "Set-Cookie";
     private java.net.CookieManager msCookieManager = new java.net.CookieManager();
@@ -42,9 +45,9 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
 
     public ServerJSONAsyncTask(Context context, String dialogMessage,
                                boolean showDialog, String url, LinkedHashMap<String, String> mParams,
-                               APIConstants.REQUEST_TYPE requestType, IAsyncCaller caller, Parser parser) {
+                               APIConstants.REQUEST_TYPE requestType, IAsyncCaller caller, Parser parser, boolean bySwipe) {
         super(context, dialogMessage, showDialog, url, mParams, requestType,
-                caller, parser);
+                caller, parser, bySwipe);
 
     }
 
@@ -86,10 +89,42 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
     @Override
     protected void onPostExecute(Integer result) {
         super.onPostExecute(result);
+
         try {
+
             if (!isCancelled() && result == 1) {
                 if (model != null) {
                     caller.onComplete(model);
+
+                    String type = mParams.get("Type");
+
+                    if (type.equalsIgnoreCase("escort")){
+                        String mode = mParams.get("Mode");
+
+                        if (mode.equalsIgnoreCase("in")){
+
+                            if (dbHelper.getINSwipedDetailsFromDB().length() > 0) {
+                                dbHelper.deleteINSwipeDetailsFromDB();
+                            }
+
+                        }else if (mode.equalsIgnoreCase("out")){
+
+                            if (dbHelper.getOUTSwipedDetailsFromDB().length() > 0) {
+                                dbHelper.deleteOUTSwipeDetailsFromDB();
+                            }
+
+                        }
+
+                    }else {
+
+                        if (dbHelper.getMESSSwipedDetailsFromDB().length() > 0) {
+                            dbHelper.deleteMESSSwipeDetailsFromDB();
+                        }
+
+                    }
+
+
+
                 } else {
                     Utility.showToastMessage(mContext, "Server response error!");
                 }
@@ -103,6 +138,28 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
                         Utility.NO_INTERNET_CONNECTION).show();
                 model = null;
                 caller.onComplete(model);
+
+                String type = mParams.get("Type");
+
+                if (type.equalsIgnoreCase("escort")){
+                    String mode = mParams.get("Mode");
+
+                    if (mode.equalsIgnoreCase("in")){
+
+                        dbHelper.insertINSwipedDetailsFromDB(mParams.toString());
+
+                    }else if (mode.equalsIgnoreCase("out")){
+
+                        dbHelper.insertOUTSwipedDetailsFromDB(mParams.toString());
+
+                    }
+
+                }else {
+
+                    dbHelper.insertMESSSwipedDetailsFromDB(mParams.toString());
+
+                }
+
             } else {
                 model = null;
                 caller.onComplete(model);
@@ -174,17 +231,62 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
             return null;
         }
 
+        dbHelper = new DBHelper(mContext);
+
         if (mParams != null) {
             try {
-                String param1 = mParams.toString();
-                Utility.showLog("param1", "" + param1);
+
+                Utility.showLog("param1", "" + mParams.toString());
                 OutputStream os = connection.getOutputStream();
                 Writer writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
-                if (mUrl.contains(APIConstants.HELPER_LOGIN) || mUrl.contains(APIConstants.CREATE_ESCORT_MESS_ATTENDANCE)) {
+                //removed condition || mUrl.contains(APIConstants.CREATE_ESCORT_MESS_ATTENDANCE
+                if (mUrl.contains(APIConstants.HELPER_LOGIN)) {
                     Utility.showLog("mParams", "" + getURL(mParams));
                     writer.write(getURL(mParams));
                 } else {
-                    writer.write(param1);
+
+                    JSONObject parentSwipe = new JSONObject();
+                    JSONArray preSwipedFailed = new JSONArray();
+
+                    String type = mParams.get("Type");
+
+                    if (type.equalsIgnoreCase("escort")){
+                        String mode = mParams.get("Mode");
+
+                        if (mode.equalsIgnoreCase("in")){
+
+                            if (dbHelper.getINSwipedDetailsFromDB().length() > 0) {
+
+                                 preSwipedFailed = dbHelper.getINSwipedDetailsFromDB();
+
+                            }
+
+                        }else if (mode.equalsIgnoreCase("out")){
+
+                            if (dbHelper.getOUTSwipedDetailsFromDB().length() > 0) {
+
+                                 preSwipedFailed = dbHelper.getOUTSwipedDetailsFromDB();
+
+                            }
+
+                        }
+
+                    }else {
+
+                        if (dbHelper.getMESSSwipedDetailsFromDB().length() > 0) {
+
+                             preSwipedFailed = dbHelper.getMESSSwipedDetailsFromDB();
+
+                        }
+
+                    }
+
+                    if (bySwipe)
+                    preSwipedFailed.put(mParams);
+
+                    parentSwipe.put("EscortMessData", preSwipedFailed);
+
+                    writer.write(parentSwipe.toString());
                 }
                 /*
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
