@@ -80,16 +80,19 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
 
             if (mMode.equalsIgnoreCase("in")){
 
+                if(dbHelper.getINSwipedDetailsFromDB().length() >0)
                 offlineCount.setText(dbHelper.getINSwipedDetailsFromDB().length());
 
             }else if (mMode.equalsIgnoreCase("out")){
 
+                if(dbHelper.getOUTSwipedDetailsFromDB().length() >0)
                 offlineCount.setText(dbHelper.getOUTSwipedDetailsFromDB().length());
 
             }
 
         }else {
 
+            if(dbHelper.getMESSSwipedDetailsFromDB().length() >0)
             offlineCount.setText(dbHelper.getMESSSwipedDetailsFromDB().length());
 
         }
