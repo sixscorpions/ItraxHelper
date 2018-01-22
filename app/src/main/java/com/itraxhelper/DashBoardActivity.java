@@ -14,22 +14,27 @@ import android.widget.Toast;
 
 import com.itraxhelper.aynctask.IAsyncCaller;
 import com.itraxhelper.aynctask.ServerJSONAsyncTask;
-import com.itraxhelper.models.LoginModel;
+import com.itraxhelper.aynctaskold.ServerIntractorAsync;
+import com.itraxhelper.db.DatabaseHandler;
+import com.itraxhelper.db.MessDataSource;
+import com.itraxhelper.models.MessEscortDataModel;
 import com.itraxhelper.models.Model;
 import com.itraxhelper.models.RFIDModel;
-import com.itraxhelper.parser.LoginParser;
 import com.itraxhelper.parser.RFIDParser;
 import com.itraxhelper.utils.APIConstants;
 import com.itraxhelper.utils.Constants;
-import com.itraxhelper.utils.DBHelper;
 import com.itraxhelper.utils.Utility;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by shankar on 8/4/2017.
@@ -46,9 +51,13 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
     @BindView(R.id.tv_title)
     TextView tv_title;
 
+    @BindView(R.id.rl_db_records)
+    RelativeLayout rl_db_records;
+
     private Intent intent;
     private String mType;
     private String mMode;
+    private MessDataSource messDataSource;
 
 
     @Override
@@ -66,37 +75,21 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
                 tv_title.setText(mMode.toUpperCase());
         }
 
-        DBHelper dbHelper = new DBHelper(this);
-
+        DatabaseHandler.getInstance(this);
+        messDataSource = new MessDataSource(this);
         offlineCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendDataToServer(false);
+                sendDataToServer();
             }
         });
 
-
-        if (mType.equalsIgnoreCase("escort")){
-
-            if (mMode.equalsIgnoreCase("in")){
-
-                if(dbHelper.getINSwipedDetailsFromDB().length() >0)
-                offlineCount.setText(dbHelper.getINSwipedDetailsFromDB().length());
-
-            }else if (mMode.equalsIgnoreCase("out")){
-
-                if(dbHelper.getOUTSwipedDetailsFromDB().length() >0)
-                offlineCount.setText(dbHelper.getOUTSwipedDetailsFromDB().length());
-
-            }
-
-        }else {
-
-            if(dbHelper.getMESSSwipedDetailsFromDB().length() >0)
-            offlineCount.setText(dbHelper.getMESSSwipedDetailsFromDB().length());
-
+        if (messDataSource.getDataCount() > 0) {
+            rl_db_records.setVisibility(View.VISIBLE);
+            offlineCount.setText("" + messDataSource.getDataCount());
+        } else {
+            rl_db_records.setVisibility(View.GONE);
         }
-
 
         et_id.addTextChangedListener(new TextWatcher() {
             @Override
@@ -111,50 +104,109 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 9)
-                    sendDataToServer(true);
+                if (s.length() > 9) {
+                    if (Utility.isNetworkAvailable(DashBoardActivity.this)) {
+                        if (!messDataSource.isExistingAddress(et_id.getText().toString() + mType + Utility.getDate() + mMode)) {
+                            saveInLocalDb();
+                            sendDataToServer();
+                            Utility.showLog("1", "1");
+                        } else {
+                            Utility.showToastMessage(DashBoardActivity.this, "Already Record there");
+                            Utility.showLog("2", "2");
+                            et_id.setText("");
+                        }
+                    } else {
+                        if (!messDataSource.isExistingAddress(et_id.getText().toString() + mType + Utility.getDate() + mMode)) {
+                            Utility.showLog("3", "3 " + et_id.getText().toString() + mType + Utility.getDate() + mMode);
+                            saveInLocalDb();
+                        } else {
+                            Utility.showToastMessage(DashBoardActivity.this, "Already Record there");
+                            Utility.showLog("4", "4 " + et_id.getText().toString() + mType + Utility.getDate() + mMode);
+                            et_id.setText("");
+                        }
+                    }
+                }
+
             }
         });
     }
 
-    void sendDataToServer(boolean bySwipe) {
-        if (isValidFields()) {
-            try {
 
-                LinkedHashMap linkedHashMap = new LinkedHashMap();
-                JSONArray jsonArray = new JSONArray();
+    /**
+     * This method is used for sync
+     */
+    @OnClick(R.id.offlineCount)
+    void sync() {
+        sendDataToServer();
+    }
 
-                if (bySwipe) {
+    /**
+     * This method is used to save data in the local db
+     */
+    private void saveInLocalDb() {
+        MessEscortDataModel messEscortDataModel = new MessEscortDataModel();
+        try {
+            messEscortDataModel.setRFId(et_id.getText().toString());
+            messEscortDataModel.setType(mType);
+            messEscortDataModel.setTime(Utility.getTime());
+            messEscortDataModel.setDate(Utility.getDate());
+            messEscortDataModel.setYear(Utility.getYear());
+            messEscortDataModel.setMonth(Utility.getMonth());
+            messEscortDataModel.setMode(mMode);
+            messEscortDataModel.setAll(et_id.getText().toString() + mType + Utility.getDate() + mMode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        messDataSource.insertData(messEscortDataModel);
 
-                    linkedHashMap.put("RFId", et_id.getText().toString());
-                    linkedHashMap.put("Type", mType);
-                    linkedHashMap.put("Time", Utility.getTime());
-                    linkedHashMap.put("Date", Utility.getDate());
-                    linkedHashMap.put("Year", Utility.getYear());
-                    linkedHashMap.put("Month", Utility.getMonth());
-                    linkedHashMap.put("Month", Utility.getMonth());
-                    linkedHashMap.put("Mode", mMode);
-                    jsonArray.put(linkedHashMap);
-                }else{
-
-                    DBHelper dbHelper = new DBHelper(this);
-
-                    if(offlineCount.getText().equals("0")){
-                        Toast.makeText(DashBoardActivity.this,"No unsucessful records to update.",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                }
-
-                RFIDParser rfidParser = new RFIDParser();
-                ServerJSONAsyncTask serverJSONAsyncTask = new ServerJSONAsyncTask(
-                        this, Utility.getResourcesString(this, R.string.please_wait), true,
-                        APIConstants.CREATE_ESCORT_MESS_ATTENDANCE, linkedHashMap,
-                        APIConstants.REQUEST_TYPE.POST, this, rfidParser, bySwipe);
-                Utility.execute(serverJSONAsyncTask);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (!Utility.isNetworkAvailable(this)) {
+            et_id.setText("");
+            if (messDataSource.getDataCount() > 0) {
+                rl_db_records.setVisibility(View.VISIBLE);
+                offlineCount.setText("" + messDataSource.getDataCount());
+            } else {
+                rl_db_records.setVisibility(View.GONE);
             }
+            Toast.makeText(DashBoardActivity.this, "Saved record in local DB", Toast.LENGTH_SHORT).show();
+        } else {
+            et_id.setText("");
+            Utility.showToastMessage(DashBoardActivity.this, "Clear");
+        }
+    }
+
+
+    private void sendDataToServer() {
+        final ArrayList<MessEscortDataModel> messEscortDataModels = messDataSource.selectAll();
+        JSONArray jsonSalesRecordsArray = new JSONArray();
+        if (messEscortDataModels != null && messEscortDataModels.size() > 0) {
+            for (int i = 0; i < messEscortDataModels.size(); i++) {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("RFId", messEscortDataModels.get(i).getRFId());
+                    jsonObject.put("Type", messEscortDataModels.get(i).getType());
+                    jsonObject.put("Time", messEscortDataModels.get(i).getTime());
+                    jsonObject.put("Date", messEscortDataModels.get(i).getDate());
+                    jsonObject.put("Year", messEscortDataModels.get(i).getYear());
+                    jsonObject.put("Month", messEscortDataModels.get(i).getMonth());
+                    jsonObject.put("Mode", messEscortDataModels.get(i).getMode());
+                    jsonSalesRecordsArray.put(jsonObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        try {
+            LinkedHashMap linkedHashMap = new LinkedHashMap();
+            linkedHashMap.put("MessEscortData", jsonSalesRecordsArray);
+            RFIDParser rfidParser = new RFIDParser();
+            ServerIntractorAsync serverJSONAsyncTask = new ServerIntractorAsync(
+                    this, Utility.getResourcesString(this, R.string.please_wait), true,
+                    APIConstants.CREATE_ESCORT_MESS_ATTENDANCE, linkedHashMap,
+                    APIConstants.REQUEST_TYPE.POST, this, rfidParser);
+            Utility.execute(serverJSONAsyncTask);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -175,11 +227,16 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
             if (model instanceof RFIDModel) {
                 RFIDModel mRFIDModel = (RFIDModel) model;
                 //Utility.showToastMessage(DashBoardActivity.this, "Student Name: " + mRFIDModel.getStudentName());
-
                 SpannableStringBuilder biggerText = new SpannableStringBuilder(mRFIDModel.getStudentName());
                 biggerText.setSpan(new RelativeSizeSpan(2.0f), 0, mRFIDModel.getStudentName().length(), 0);
                 Toast.makeText(DashBoardActivity.this, biggerText, Toast.LENGTH_SHORT).show();
-
+                messDataSource.deleteAll();
+                if (messDataSource.getDataCount() > 0) {
+                    rl_db_records.setVisibility(View.VISIBLE);
+                    offlineCount.setText("" + messDataSource.selectAll().size());
+                } else {
+                    rl_db_records.setVisibility(View.GONE);
+                }
             }
         }
 

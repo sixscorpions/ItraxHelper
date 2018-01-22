@@ -37,45 +37,46 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_db_records"
         android:layout_width="match_parent"
-        android:gravity="end"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/header"
-        android:layout_centerHorizontal="true">
+        android:gravity="end">
 
         <TextView
-            android:padding="10dp"
-            android:background="@android:color/holo_red_dark"
             android:id="@+id/offlineCount"
-            android:textStyle="bold"
-            android:gravity="end"
-            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:background="@android:color/holo_red_dark"
+            android:gravity="end"
+            android:padding="10dp"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
 
         <TextView
-            android:padding="5dp"
-            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="unsubmitted swipe records"
+            android:layout_alignParentEnd="true"
             android:layout_below="@+id/offlineCount"
-            android:layout_alignParentEnd="true" />
+            android:padding="5dp"
+            android:text="unsubmitted swipe records"
+            android:textColor="@android:color/black" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_alignParentStart="true">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"

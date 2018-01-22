@@ -297,7 +297,8 @@ public class Utility {
         // Limit
         HttpResponse response;
         HttpPost post = new HttpPost(url);
-        //post.setHeader("token", Utility.getSharedPrefStringData(context, Constants.TOKEN));
+        Utility.showLog("session id ", "Session" + Utility.getSharedPrefStringData(context, Constants.LOGIN_SESSION_ID));
+        post.setHeader("Cookie", "connect.sid=" + Utility.getSharedPrefStringData(context, Constants.LOGIN_SESSION_ID));
         StringEntity se;
         try {
             se = new StringEntity(getJsonParams(mParams));
@@ -305,8 +306,10 @@ public class Utility {
                     "application/json"));
             post.setEntity(se);
             response = client.execute(post);
-            //* Checking response *//*
-            if (response != null) {
+
+            if (response != null && response.getStatusLine().getStatusCode() == 401 || response.getStatusLine().getStatusCode() == 502) {
+                websiteData = null;
+            } else if (response != null) {
                 websiteData = EntityUtils.toString(response.getEntity());
             }
         } catch (Exception e) {
@@ -316,6 +319,7 @@ public class Utility {
         }
         return websiteData;
     }
+
 
     public static String getJsonParams(HashMap<String, String> paramMap) {
         if (paramMap == null) {
@@ -332,6 +336,8 @@ public class Utility {
                     JSONObject jsonArrayLogin = new JSONObject(entry
                             .getValue());
                     jsonObject.accumulate(entry.getKey(), jsonArrayLogin);
+                } else if (entry.getKey().equalsIgnoreCase("MessEscortData")) {
+                    jsonObject.accumulate(entry.getKey(), entry.getValue());
                 } else {
                     jsonObject.accumulate(entry.getKey(), entry
                             .getValue());

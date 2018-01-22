@@ -6,10 +6,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.itraxhelper.db.DatabaseHandler;
 import com.itraxhelper.models.LoginModel;
 import com.itraxhelper.parser.LoginParser;
 import com.itraxhelper.utils.Constants;
-import com.itraxhelper.utils.DBHelper;
 import com.itraxhelper.utils.Utility;
 
 import butterknife.BindView;
@@ -28,14 +28,13 @@ public class MainActivity extends BaseActivity {
     TextView tv_logout;
 
     private LoginModel loginModel;
-    private DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbHelper = new DBHelper(MainActivity.this);
+        DatabaseHandler.getInstance(this);
 
         ButterKnife.bind(this);
         LoginParser loginParser = new LoginParser();

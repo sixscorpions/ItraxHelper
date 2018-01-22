@@ -6,7 +6,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 
-import com.itraxhelper.customviews.CustomProgressDialog;
 import com.itraxhelper.parser.Parser;
 import com.itraxhelper.utils.APIConstants;
 
@@ -35,7 +34,6 @@ public abstract class BaseAsyncTask extends AsyncTask<Void, Void, Integer> {
     protected LayoutInflater mLayoutInflater;
     protected File file;
     protected String tag;
-    protected boolean bySwipe;
     protected ArrayList<File> mFiles;
 
     /**
@@ -50,7 +48,7 @@ public abstract class BaseAsyncTask extends AsyncTask<Void, Void, Integer> {
      */
     public BaseAsyncTask(Context context, String dialogMessage,
                          boolean showDialog, String url, LinkedHashMap<String, String> mParams,
-                         APIConstants.REQUEST_TYPE requestType, IAsyncCaller caller, Parser parser, boolean bySwipe) {
+                         APIConstants.REQUEST_TYPE requestType, IAsyncCaller caller, Parser parser) {
 
         this.mContext = context;
         this.mDialogMessage = dialogMessage;
@@ -62,7 +60,6 @@ public abstract class BaseAsyncTask extends AsyncTask<Void, Void, Integer> {
         this.parser = parser;
         mCustomProgressDialog = new ProgressDialog(mContext);
         mCustomProgressDialog.setMessage(mDialogMessage);
-        this.bySwipe = bySwipe;
     }
 
     public BaseAsyncTask(Context context, String dialogMessage,
