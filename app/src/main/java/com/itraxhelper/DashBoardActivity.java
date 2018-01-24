@@ -170,7 +170,6 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
             Toast.makeText(DashBoardActivity.this, "Saved record in local DB", Toast.LENGTH_SHORT).show();
         } else {
             et_id.setText("");
-            Utility.showToastMessage(DashBoardActivity.this, "Clear");
         }
     }
 

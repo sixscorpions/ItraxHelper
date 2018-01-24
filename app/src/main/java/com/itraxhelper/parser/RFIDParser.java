@@ -18,7 +18,11 @@ public class RFIDParser implements Parser<Model> {
         RFIDModel rfidModel = new RFIDModel();
         try {
             JSONObject jsonObject = new JSONObject(s);
-            rfidModel.setStudentName(jsonObject.optString("message"));
+            if (jsonObject.has("StudentName")) {
+                rfidModel.setStudentName(jsonObject.optString("StudentName"));
+            } else if (jsonObject.has("message")) {
+                rfidModel.setStudentName(jsonObject.optString("message"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
