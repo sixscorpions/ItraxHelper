@@ -1,14 +1,12 @@
 package com.itraxhelper.aynctaskold;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 
-
+import com.itraxhelper.DashBoardActivity;
 import com.itraxhelper.aynctask.IAsyncCaller;
-import com.itraxhelper.customviews.CustomProgressDialog;
 import com.itraxhelper.parser.Parser;
 import com.itraxhelper.utils.APIConstants;
 
@@ -21,7 +19,7 @@ import java.util.HashMap;
 public abstract class BaseAsynkTask extends AsyncTask<Void, Void, Integer> {
     protected AnimationDrawable Anim;
     private ProgressDialog mCustomProgressDialog = null;
-    protected Context mContext;
+    protected DashBoardActivity mContext;
     protected String mDialogMessage, mApiMessage;
     protected boolean mShowDialog;
 
@@ -44,7 +42,7 @@ public abstract class BaseAsynkTask extends AsyncTask<Void, Void, Integer> {
      * @param caller        , Caller activity which will recieve response
      * @param parser        , JSON parser for the response
      */
-    public BaseAsynkTask(Context context, String dialogMessage,
+    public BaseAsynkTask(DashBoardActivity context, String dialogMessage,
                          boolean showDialog, String url, HashMap<String, String> mParamMap,
                          APIConstants.REQUEST_TYPE requestType, IAsyncCaller caller, Parser parser) {
 

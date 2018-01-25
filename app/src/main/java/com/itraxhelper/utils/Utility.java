@@ -2,11 +2,13 @@ package com.itraxhelper.utils;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -20,6 +22,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.itraxhelper.DashBoardActivity;
+import com.itraxhelper.LoginActivity;
 import com.itraxhelper.R;
 
 import org.apache.http.HttpResponse;
@@ -219,25 +223,56 @@ public class Utility {
         }
     }
 
-    public static void showOKOnlyDialog(Context context, String msg,
+    public static void showOKOnlyDialog(final DashBoardActivity context, String msg,
                                         String title) {
-        SpannableString s = new SpannableString(msg);
-        Linkify.addLinks(s, Linkify.ALL);
 
-        AlertDialog d = new AlertDialog.Builder(context)
-                .setMessage(s)
-                .setTitle(title)
-                .setPositiveButton(R.string.alert_dialog_ok,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int whichButton) {
-                            }
-                        }).show();
+        final Dialog mDialog = new Dialog(context);
+        mDialog.requestWindowFeature(1);
+        mDialog.setContentView(R.layout.session_dialog);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.setCancelable(true);
 
-        ((TextView) d.findViewById(android.R.id.message))
-                .setMovementMethod(LinkMovementMethod.getInstance());
+        TextView tv_heading = (TextView) mDialog.findViewById(R.id.tv_heading);
+        tv_heading.setText(msg);
+        ((TextView) mDialog.findViewById(R.id.tv_ok)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Utility.showLog("Clicked", "Clicked");
+                Utility.setSharedPrefStringData(context, Constants.LOGIN_SESSION_ID, "");
+                Intent intent = new Intent(context, LoginActivity.class);
+                context.startActivity(intent);
+                context.finish();
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
+
+    public static void showOKOnlyDialog(final LoginActivity context, String msg,
+                                        String title) {
+
+        final Dialog mDialog = new Dialog(context);
+        mDialog.requestWindowFeature(1);
+        mDialog.setContentView(R.layout.session_dialog);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.setCancelable(true);
+
+        TextView tv_heading = (TextView) mDialog.findViewById(R.id.tv_heading);
+        tv_heading.setText(msg);
+        ((TextView) mDialog.findViewById(R.id.tv_ok)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Utility.showLog("Clicked", "Clicked");
+                Utility.setSharedPrefStringData(context, Constants.LOGIN_SESSION_ID, "");
+                Intent intent = new Intent(context, LoginActivity.class);
+                context.startActivity(intent);
+                context.finish();
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
+    }
+
 
     /**
      * GET SHARED PREFERENCES STRING DATA

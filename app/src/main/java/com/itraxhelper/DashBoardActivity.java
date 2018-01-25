@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.itraxhelper.aynctask.IAsyncCaller;
-import com.itraxhelper.aynctask.ServerJSONAsyncTask;
 import com.itraxhelper.aynctaskold.ServerIntractorAsync;
 import com.itraxhelper.db.DatabaseHandler;
 import com.itraxhelper.db.MessDataSource;
@@ -111,7 +110,10 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
                             sendDataToServer();
                             Utility.showLog("1", "1");
                         } else {
-                            Utility.showToastMessage(DashBoardActivity.this, "Already Record there");
+                            SpannableStringBuilder biggerText = new SpannableStringBuilder("Student already Swiped");
+                            biggerText.setSpan(new RelativeSizeSpan(2.0f), 0, "Student already Swiped".length(), 0);
+                            Toast.makeText(DashBoardActivity.this, biggerText, Toast.LENGTH_SHORT).show();
+
                             Utility.showLog("2", "2");
                             et_id.setText("");
                         }
@@ -120,7 +122,9 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
                             Utility.showLog("3", "3 " + et_id.getText().toString() + mType + Utility.getDate() + mMode);
                             saveInLocalDb();
                         } else {
-                            Utility.showToastMessage(DashBoardActivity.this, "Already Record there");
+                            SpannableStringBuilder biggerText = new SpannableStringBuilder("Student already Swiped");
+                            biggerText.setSpan(new RelativeSizeSpan(2.0f), 0, "Student already Swiped".length(), 0);
+                            Toast.makeText(DashBoardActivity.this, biggerText, Toast.LENGTH_SHORT).show();
                             Utility.showLog("4", "4 " + et_id.getText().toString() + mType + Utility.getDate() + mMode);
                             et_id.setText("");
                         }

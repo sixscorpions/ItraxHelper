@@ -1,8 +1,8 @@
 package com.itraxhelper.aynctask;
 
-import android.content.Context;
 import android.support.compat.BuildConfig;
 
+import com.itraxhelper.LoginActivity;
 import com.itraxhelper.R;
 import com.itraxhelper.models.Model;
 import com.itraxhelper.parser.Parser;
@@ -40,7 +40,7 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
     private java.net.CookieManager msCookieManager = new java.net.CookieManager();
     private int responseCode;
 
-    public ServerJSONAsyncTask(Context context, String dialogMessage,
+    public ServerJSONAsyncTask(LoginActivity context, String dialogMessage,
                                boolean showDialog, String url, LinkedHashMap<String, String> mParams,
                                APIConstants.REQUEST_TYPE requestType, IAsyncCaller caller, Parser parser) {
         super(context, dialogMessage, showDialog, url, mParams, requestType,
@@ -48,7 +48,7 @@ public class ServerJSONAsyncTask extends BaseAsyncTask {
 
     }
 
-    public ServerJSONAsyncTask(Context context, String dialogMessage,
+    public ServerJSONAsyncTask(LoginActivity context, String dialogMessage,
                                boolean showDialog, String url, LinkedHashMap<String, String> mParams,
                                APIConstants.REQUEST_TYPE requestType, IAsyncCaller caller, Parser parser, String tag, File file, ArrayList<File> mFiles) {
         super(context, dialogMessage, showDialog, url, mParams, requestType,
