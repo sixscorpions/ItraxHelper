@@ -34,6 +34,7 @@ public class LoginParser implements Parser<Model> {
             loginModel.setContactEmail(jsonObject.optString("ContactEmail"));
             loginModel.setContactMobile(jsonObject.optString("ContactMobile"));
             loginModel.setPhoto(jsonObject.optString("Photo"));
+            loginModel.setToken(jsonObject.optString("Token"));
 
             HelperAppFeatureModel helperAppFeatureModel = new HelperAppFeatureModel();
             JSONObject helperAppFeatureJsonObject = jsonObject.optJSONObject("HelperAppFeature");

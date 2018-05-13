@@ -103,6 +103,7 @@ public class LoginActivity extends BaseActivity implements IAsyncCaller {
         Utility.setSharedPrefStringData(this, Constants.LOGIN_CONTACT_EMAIL, loginModel.getContactEmail());
         Utility.setSharedPrefStringData(this, Constants.LOGIN_CONTACT_MOBILE, loginModel.getContactMobile());
         Utility.setSharedPrefStringData(this, Constants.LOGIN_PHOTO, loginModel.getPhoto());
+        Utility.setSharedPrefStringData(this, Constants.TOKEN, loginModel.getToken());
         navigateToMain();
     }
 

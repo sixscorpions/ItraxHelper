@@ -333,7 +333,8 @@ public class Utility {
         HttpResponse response;
         HttpPost post = new HttpPost(url);
         Utility.showLog("session id ", "Session" + Utility.getSharedPrefStringData(context, Constants.LOGIN_SESSION_ID));
-        post.setHeader("Cookie", "connect.sid=" + Utility.getSharedPrefStringData(context, Constants.LOGIN_SESSION_ID));
+        //post.setHeader("Cookie", "connect.sid=" + Utility.getSharedPrefStringData(context, Constants.LOGIN_SESSION_ID));
+        post.setHeader("token", Utility.getSharedPrefStringData(context, Constants.TOKEN));
         StringEntity se;
         try {
             se = new StringEntity(getJsonParams(mParams));

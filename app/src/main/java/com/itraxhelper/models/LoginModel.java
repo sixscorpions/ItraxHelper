@@ -16,6 +16,7 @@ public class LoginModel extends Model {
     private String ContactEmail;
     private String ContactMobile;
     private String Photo;
+    private String Token;
     private HelperAppFeatureModel helperAppFeatureModel;
     private ArrayList<RolesModel> rolesModels;
 
@@ -105,5 +106,13 @@ public class LoginModel extends Model {
 
     public void setRolesModels(ArrayList<RolesModel> rolesModels) {
         this.rolesModels = rolesModels;
+    }
+
+    public String getToken() {
+        return Token;
+    }
+
+    public void setToken(String token) {
+        Token = token;
     }
 }

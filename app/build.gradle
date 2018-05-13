@@ -21,6 +21,7 @@ android {
     }
     productFlavors {
         schoolgateapp {
+            dimension "schoolgateapp"
             applicationId 'com.icue.schoolgateapp'
             versionName '1.0'
             versionCode 1
