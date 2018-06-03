@@ -66,6 +66,7 @@ public class MainActivity extends BaseActivity {
         Utility.setSharedPrefStringData(this, Constants.LOGIN_CONTACT_MOBILE, "");
         Utility.setSharedPrefStringData(this, Constants.LOGIN_PHOTO, "");
         Utility.setSharedPrefStringData(this, Constants.LOGIN_SESSION_ID, "");
+        Utility.setSharedPrefStringData(this, Constants.TOKEN, "");
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();

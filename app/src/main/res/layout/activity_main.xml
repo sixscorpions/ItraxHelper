@@ -44,7 +44,8 @@
             android:paddingEnd="@dimen/_10dp"
             android:text="@string/log_out"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/_25sp" />
+            android:textSize="@dimen/_25sp"
+            android:onClick="logOut"/>
 
     </RelativeLayout>
 

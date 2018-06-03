@@ -15,7 +15,7 @@
     <string name="hint_pin">Enter Pin</string>
     <string name="login">Login</string>
     <string name="forgotPin">Forgot Pin</string>
-    <string name="copyrights">Copyright © iCue 2016.</string>
+    <string name="copyrights">Copyright © iCue 2018.</string>
     <string name="reseved">All Rights Reserved</string>
     <string name="unauthorized_access">Unauthorized access</string>
     <string name="student_not_found">Student not found</string>

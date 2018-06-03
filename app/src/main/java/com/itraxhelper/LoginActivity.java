@@ -72,7 +72,7 @@ public class LoginActivity extends BaseActivity implements IAsyncCaller {
             Utility.setSnackBar(et_username, "Please enter user name");
             et_username.requestFocus();
         } else if (Utility.isValueNullOrEmpty(et_password.getText().toString().trim())) {
-            Utility.setSnackBar(et_password, "Please enter pass word");
+            Utility.setSnackBar(et_password, "Please enter password");
             et_username.requestFocus();
         } else {
             isValidated = true;
