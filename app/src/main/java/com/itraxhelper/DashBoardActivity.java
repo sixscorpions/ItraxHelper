@@ -262,11 +262,11 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
             LinkedHashMap linkedHashMap = new LinkedHashMap();
             linkedHashMap.put(Constants.APPLICATION, Constants.DRIVER);
             linkedHashMap.put(Constants.APP_VERSION, BuildConfig.VERSION_CODE);
-            RFIDParser rfidParser = new RFIDParser();
+            GetAppUpdateInfoParser mGetAppUpdateInfoParser = new GetAppUpdateInfoParser();
             ServerIntractorAsync serverJSONAsyncTask = new ServerIntractorAsync(
                     this, Utility.getResourcesString(this, R.string.please_wait), true,
                     APIConstants.GET_APP_UPDATE_INFO, linkedHashMap,
-                    APIConstants.REQUEST_TYPE.POST, this, rfidParser);
+                    APIConstants.REQUEST_TYPE.POST, this, mGetAppUpdateInfoParser);
             Utility.execute(serverJSONAsyncTask);
         } catch (Exception e) {
             e.printStackTrace();
