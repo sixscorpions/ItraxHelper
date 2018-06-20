@@ -6,6 +6,8 @@ package com.itraxhelper.utils;
  */
 
 public class APIConstants {
+
+
     public enum REQUEST_TYPE {
         GET, POST, MULTIPART_GET, MULTIPART_POST, DELETE, PUT, PATCH
     }
@@ -22,4 +24,5 @@ public class APIConstants {
     public static String HELPER_LOGIN = BASE_URL + "helperLogin";
     public static String CREATE_ESCORT_MESS_ATTENDANCE = BASE_URL + "createEscortMessAttendance";
 
+    public static final String GET_APP_UPDATE_INFO = BASE_URL + "/getAppUpdateInfo";
 }

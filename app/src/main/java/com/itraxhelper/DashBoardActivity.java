@@ -1,6 +1,9 @@
 package com.itraxhelper;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -16,9 +19,11 @@ import com.itraxhelper.aynctask.IAsyncCaller;
 import com.itraxhelper.aynctaskold.ServerIntractorAsync;
 import com.itraxhelper.db.DatabaseHandler;
 import com.itraxhelper.db.MessDataSource;
+import com.itraxhelper.models.GetAppUpdateInfoModel;
 import com.itraxhelper.models.MessEscortDataModel;
 import com.itraxhelper.models.Model;
 import com.itraxhelper.models.RFIDModel;
+import com.itraxhelper.parser.GetAppUpdateInfoParser;
 import com.itraxhelper.parser.RFIDParser;
 import com.itraxhelper.utils.APIConstants;
 import com.itraxhelper.utils.Constants;
@@ -29,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import butterknife.BindView;
@@ -74,6 +80,7 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
                 tv_title.setText(mMode.toUpperCase());
         }
 
+        getAppUpdateInfo();
         DatabaseHandler.getInstance(this);
         messDataSource = new MessDataSource(this);
         offlineCount.setOnClickListener(new View.OnClickListener() {
@@ -240,9 +247,74 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
                 } else {
                     rl_db_records.setVisibility(View.GONE);
                 }
+            }else if(model instanceof GetAppUpdateInfoModel){
+                GetAppUpdateInfoModel getAppUpdateInfoModel = (GetAppUpdateInfoModel) model;
+                showUpdatePopup(getAppUpdateInfoModel);
             }
         }
 
         et_id.setText("");
+    }
+
+    private void getAppUpdateInfo() {
+
+        try {
+            LinkedHashMap linkedHashMap = new LinkedHashMap();
+            linkedHashMap.put(Constants.APPLICATION, Constants.DRIVER);
+            linkedHashMap.put(Constants.APP_VERSION, BuildConfig.VERSION_CODE);
+            RFIDParser rfidParser = new RFIDParser();
+            ServerIntractorAsync serverJSONAsyncTask = new ServerIntractorAsync(
+                    this, Utility.getResourcesString(this, R.string.please_wait), true,
+                    APIConstants.GET_APP_UPDATE_INFO, linkedHashMap,
+                    APIConstants.REQUEST_TYPE.POST, this, rfidParser);
+            Utility.execute(serverJSONAsyncTask);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void showUpdatePopup(final GetAppUpdateInfoModel getAppUpdateInfoModel) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+
+        // set title
+        alertDialogBuilder.setTitle("Update");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(Utility.getResourcesString(this, R.string.update_version))
+                .setCancelable(false)
+                .setPositiveButton("Update Now", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        final String appPackageName = getPackageName();
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        }
+
+                    }
+                })
+                .setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Constants.KEY_VERSION_CHECKER = false;
+                        dialog.dismiss();
+                        if (getAppUpdateInfoModel.isForceToUpdate()) {
+                            moveTaskToBack(true);
+                            android.os.Process.killProcess(android.os.Process.myPid());
+                            System.exit(1);
+                        }
+
+
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        if (getAppUpdateInfoModel.isForceToUpdate() || getAppUpdateInfoModel.isUpdate())
+            alertDialog.show();
     }
 }
