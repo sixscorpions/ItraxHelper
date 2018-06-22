@@ -56,6 +56,9 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
     @BindView(R.id.tv_title)
     TextView tv_title;
 
+    @BindView(R.id.tv_scan)
+    TextView tv_scan;
+
     @BindView(R.id.rl_db_records)
     RelativeLayout rl_db_records;
 
@@ -80,7 +83,7 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
                 tv_title.setText(mMode.toUpperCase());
         }
 
-        getAppUpdateInfo();
+        //getAppUpdateInfo();
         DatabaseHandler.getInstance(this);
         messDataSource = new MessDataSource(this);
         offlineCount.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +152,20 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
     @OnClick(R.id.offlineCount)
     void sync() {
         sendDataToServer();
+    }
+
+
+    /**
+     * This method is used for scan
+     */
+    @OnClick(R.id.tv_scan)
+    void scan() {
+        scanBarcodeOrQRcode();
+    }
+
+    /*this method for scan*/
+    private void scanBarcodeOrQRcode() {
+
     }
 
     /**
