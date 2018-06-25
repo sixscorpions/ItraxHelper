@@ -1,9 +1,12 @@
 package com.itraxhelper;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -15,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.itraxhelper.aynctask.IAsyncCaller;
 import com.itraxhelper.aynctaskold.ServerIntractorAsync;
 import com.itraxhelper.db.DatabaseHandler;
@@ -165,7 +170,7 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
 
     /*this method for scan*/
     private void scanBarcodeOrQRcode() {
-
+        new IntentIntegrator(DashBoardActivity.this).setCaptureActivity(ScannerActivity.class).initiateScan();
     }
 
     /**
@@ -334,4 +339,52 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
         if (getAppUpdateInfoModel.isForceToUpdate() || getAppUpdateInfoModel.isUpdate())
             alertDialog.show();
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //We will get scan results here
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        //check for null
+        if (result != null) {
+            if (result.getContents() == null) {
+                Toast.makeText(this, "Scan Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                //show dialogue with result
+                showResultDialogue(result.getContents());
+            }
+        } else {
+            // This is important, otherwise the result will not be passed to the fragment
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    //method to construct dialogue with scan results
+    public void showResultDialogue(final String result) {
+        android.support.v7.app.AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new android.support.v7.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new android.support.v7.app.AlertDialog.Builder(this);
+        }
+        builder.setTitle("Scan Result")
+                .setMessage("Scanned result is " + result)
+                .setPositiveButton("Copy result", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("Scan Result", result);
+                        clipboard.setPrimaryClip(clip);
+                        Toast.makeText(DashBoardActivity.this, "Result copied to clipboard", Toast.LENGTH_SHORT).show();
+                        et_id.setText(result);
+
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
 }

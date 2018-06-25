@@ -41,4 +41,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.5.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    /*Add QR Library Here */
+    implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
 }

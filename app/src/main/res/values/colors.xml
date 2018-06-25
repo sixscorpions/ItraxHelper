@@ -9,4 +9,6 @@
     <color name="out_bg">#628b94</color>
     <color name="mess_bg">#8fb8bf</color>
     <color name="background_gray">#EAEAEA</color>
+
+    <color name="transparent_blue">#322100c8</color>
 </resources>

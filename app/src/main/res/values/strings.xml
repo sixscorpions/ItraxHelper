@@ -34,4 +34,6 @@
     <string name="update_version"> A New version is available on playstore. Do you want to install?</string>
     <string name="scan">SCAN</string>
 
+    <string name="message">Place a barcode inside the viewfinder rectangle to scan it.</string>
+
 </resources>
