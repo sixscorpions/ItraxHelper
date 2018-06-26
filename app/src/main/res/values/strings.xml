@@ -35,5 +35,6 @@
     <string name="scan">SCAN</string>
 
     <string name="message">Place a barcode inside the viewfinder rectangle to scan it.</string>
+    <string name="scane_qr_code">scane QR code</string>
 
 </resources>
