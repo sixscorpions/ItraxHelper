@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.RelativeSizeSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -262,7 +263,10 @@ public class DashBoardActivity extends BaseActivity implements IAsyncCaller {
                 //Utility.showToastMessage(DashBoardActivity.this, "Student Name: " + mRFIDModel.getStudentName());
                 SpannableStringBuilder biggerText = new SpannableStringBuilder(mRFIDModel.getStudentName());
                 biggerText.setSpan(new RelativeSizeSpan(2.0f), 0, mRFIDModel.getStudentName().length(), 0);
-                Toast.makeText(DashBoardActivity.this, biggerText, Toast.LENGTH_SHORT).show();
+                Toast toast = Toast.makeText(DashBoardActivity.this, biggerText, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+
                 messDataSource.deleteAll();
                 if (messDataSource.getDataCount() > 0) {
                     rl_db_records.setVisibility(View.VISIBLE);
